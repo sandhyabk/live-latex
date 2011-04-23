@@ -1,0 +1,13 @@
+LiveLaTeX
+=========
+
+LiveLaTeX is an online TeX document preparation system, developed in Python (using Django web framework) and AJAX.
+
+Features
+--------
+* Support project management, adding multiple files thereby preparing large documents in LaTeX
+* Developed using Django and AJAX.
+
+Page
+----
+http://livelatex.com/wiki
