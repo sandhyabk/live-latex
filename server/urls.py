@@ -15,6 +15,7 @@ urlpatterns = patterns('',
 	url(r'^newproject/$', 'server.latex.views.create_project'),
 	url(r'^projects/$', 'server.latex.views.projects'),
 	url(r'^projects/(?P<project_id>\d+)/$', 'server.latex.views.project_view'),
+	url(r'^projects/(?P<project_id>\d+)/addfile/$','server.latex.views.create_file'),
     # url(r'^server/', include('server.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:

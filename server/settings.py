@@ -145,3 +145,30 @@ LOGGING = {
         },
     }
 }
+
+#Miscellenious Project settings
+INPUT_FILE_TYPES = (
+	('.bib', 'Bibliography database (.bib)'),
+	('.bst', 'BiBTeX style file (.bst)'),
+	('.cls', 'Class file (.cls)'),
+	('.dtx', 'DOcumented TeX (.dtx)'),
+	('.ins', '.dtx Installer file (.ins)'),
+	('.fd', 'Font description (.fd)'),
+	('.sty', 'LaTeX macro package (.sty)'),
+	('.tex', 'LaTeX or TeX input file (.tex)'),		
+)
+
+OUTPUT_FILE_TYPES = (
+	('.aux', 'Aux file (.aux)'),
+	('.blg', 'BiBTeX log (.blg)'),
+	('.bbl', 'Bibliography file output (.bbl)'),
+	('.dvi', 'Device Independent File (.dvi)'),
+	('.pdf', 'Portable Document Format (.pdf)'),
+	('.log', 'Log file (.log)'),
+	('.toc', 'Table of contents (.toc)'),
+	('.lof', 'List of figures (.lof)'),
+	('.lot', 'List of tables (.lof)'),
+	('.idx', 'Document index (.idx)'),
+	('.ind', 'Document index (.ind)'),
+	('.ilg', 'makeindex log (.ilg)'),
+)

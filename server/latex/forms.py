@@ -2,6 +2,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from latex.models import File, Project
+from server.settings import INPUT_FILE_TYPES, OUTPUT_FILE_TYPES
 
 #User registration form
 class RegistrationForm(forms.Form):
@@ -168,14 +169,16 @@ class ResetPasswordForm(forms.Form):
 		return field_data
 
 #File edit form
-class FileEditForm(forms.ModelForm):
+class FileCreateForm(forms.ModelForm):
 	class Meta:
 		model = File
+		fields = ('file_name', 'file_type', 'content')
 		
 #Project edit form
 class ProjectForm(forms.ModelForm):
 	class Meta:
 		model = Project
+		fields = ('short_name', 'long_name', 'description')
 		
 #user login form
 class UserLogin(forms.Form):

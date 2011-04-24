@@ -58,6 +58,29 @@ def project_view(request, project_id):
 	project = Project.objects.get(id=project_id)
 	file_list = Project.objects.get(id=project_id).file_set.all().order_by("-created")
 	return render_to_response('project-view.html', {'project':project, 'file_list': file_list}, context_instance=RequestContext(request))
+	
+#create_file: create a new file, and add it to database
+def create_file(request, project_id):
+	if request.POST:
+		new_data = request.POST.copy()
+		form = FileCreateForm(new_data)
+		
+		for i in new_data.values():
+			if i == "":
+				return HttpResponse('Do not leave as blank')
+		print project_id
+		project = Project.objects.get(id=project_id) #project to which file is associated.
+		file_name = form.data['file_name']
+		file_type = form.data['file_type']
+		content = form.data['content']
+		created = datetime.datetime.today()
+		
+		new_file = File(project=project,file_name=file_name, file_type=file_type, created=created)
+		new_file.save()
+		return HttpResponse("Created file!")
+	else:
+		form = FileCreateForm()
+		return render_to_response('file-edit.html', {'form':form}, context_instance=RequestContext(request))
 
 #User Registration
 def register_user(request):
