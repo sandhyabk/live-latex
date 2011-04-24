@@ -8,12 +8,13 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'server.latex.views.home', name='home'),
-    url(r'^register/', 'server.latex.views.register_user'),
-	url(r'^login/', 'server.latex.views.user_login'),
-	url(r'^logout/', 'server.latex.views.logout'),
-	url(r'^test/', 'server.latex.views.is_logged_in'),
-	url(r'^newproject/', 'server.latex.views.create_project'),
-	url(r'^projects/', 'server.latex.views.projects'),
+    url(r'^register/$', 'server.latex.views.register_user'),
+	url(r'^login/$', 'server.latex.views.user_login'),
+	url(r'^logout/$', 'server.latex.views.logout'),
+	url(r'^test/$', 'server.latex.views.is_logged_in'),
+	url(r'^newproject/$', 'server.latex.views.create_project'),
+	url(r'^projects/$', 'server.latex.views.projects'),
+	url(r'^projects/(?P<project_id>\d+)/$', 'server.latex.views.project_view'),
     # url(r'^server/', include('server.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:

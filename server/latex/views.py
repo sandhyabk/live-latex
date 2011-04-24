@@ -52,6 +52,12 @@ def create_project(request):
 	else:
 		form = ProjectForm()
 		return render_to_response('new_project.html', {'form':form,}, context_instance=RequestContext(request))
+		
+#project_view: shows the files in a project.
+def project_view(request, project_id):
+	project = Project.objects.get(id=project_id)
+	file_list = Project.objects.get(id=project_id).file_set.all().order_by("-created")
+	return render_to_response('project-view.html', {'project':project, 'file_list': file_list}, context_instance=RequestContext(request))
 
 #User Registration
 def register_user(request):
