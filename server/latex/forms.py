@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django import forms
 from django.contrib.auth.models import User
+from latex.models import File, Project
 
 #User registration form
 class RegistrationForm(forms.Form):
@@ -9,9 +10,9 @@ class RegistrationForm(forms.Form):
 	
 	email_id = forms.EmailField(required=True)
 	
-	password1 = forms.PasswordInput()
+	password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
 
-	password2 = forms.PasswordInput()
+	password2 = forms.CharField(label="Password confirmation", widget=forms.PasswordInput)
 
 
 	def isValidUsername(self):
@@ -165,3 +166,13 @@ class ResetPasswordForm(forms.Form):
 			raise forms.ValidationError("Passwords don't match")
 
 		return field_data
+
+#File edit form
+class FileEditForm(forms.ModelForm):
+	class Meta:
+		model = File
+		
+#Project edit form
+class ProjectEditForm(forms.ModelForm):
+	class Meta:
+		model = Project

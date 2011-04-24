@@ -11,6 +11,7 @@ from django.contrib import admin
 
 class UserProfile(models.Model):
 	user = models.OneToOneField(User)
+	is_active = models.BooleanField()
 	activation_key = models.CharField(max_length=40)
 	key_expires = models.DateTimeField()
 	

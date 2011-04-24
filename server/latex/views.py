@@ -4,12 +4,13 @@ import random
 import hashlib
 
 from django.template.loader import get_template
-from django.template import Context
+from django.template import Context, RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.shortcuts import render_to_response, get_object_or_404
 from django.core.mail import send_mail
+from django.core.context_processors import csrf
 
 from latex.models import UserProfile
 from latex.forms import *
@@ -23,9 +24,8 @@ def home(request):
 #User Registration
 
 def register_user(request):
-	
-	if request.GET:
-		new_data = request.GET.copy()
+	if request.POST:
+		new_data = request.POST.copy()
 		form = RegistrationForm(new_data)
 		
 		valid_user = True
@@ -53,12 +53,13 @@ def register_user(request):
 			new_profile = UserProfile(user=new_user, activation_key=activation_key, key_expires=key_expires, is_active=True)
 			new_profile.save()
 			
-			return HttpResponse('True')
+			return HttpResponse('User added successfully')
 		else:
 			return HttpResponse('Re-enter passwords again.')
 			
 	else:
-		return HttpResponse('GET request failed.')
+		form = RegistrationForm()
+		return render_to_response('register.html', {'form':form,}, context_instance=RequestContext(request))
 
 
 #User login

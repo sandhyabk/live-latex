@@ -1,0 +1,13 @@
+p {
+	text-align: center;
+	text-shadow: 2px 1px 1px;
+	font-size: 14px;
+	font-family: Helvetica, Verdana, Arial, sans-serif;
+}
+
+h2 {
+	line-height: 2px;
+	font-size: 20px;
+	font-weight: bold;
+	font-family: fantasy;
+}
