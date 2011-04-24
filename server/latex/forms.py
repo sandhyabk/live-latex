@@ -173,7 +173,7 @@ class FileEditForm(forms.ModelForm):
 		model = File
 		
 #Project edit form
-class ProjectEditForm(forms.ModelForm):
+class ProjectForm(forms.ModelForm):
 	class Meta:
 		model = Project
 		

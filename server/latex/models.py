@@ -20,7 +20,7 @@ class Project(models.Model):
 	This module defines a project in LiveLaTeX.
 	"""
 	author = models.ForeignKey(User)
-	date = models.DateTimeField()
+	date = models.DateTimeField(auto_now_add=True)
 	short_name = models.CharField(max_length=32)
 	long_name = models.CharField(max_length=64)
 	description = models.CharField(max_length=100)
@@ -68,6 +68,3 @@ class File(models.Model):
 	
 	def __unicode__(self):
 		return self.file_name
-	
-#admin.site.register(Project)
-#admin.site.register(File)

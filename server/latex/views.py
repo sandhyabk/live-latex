@@ -11,7 +11,7 @@ from django.contrib import auth
 from django.shortcuts import render_to_response, get_object_or_404
 from django.core.context_processors import csrf
 
-from latex.models import UserProfile
+from latex.models import *
 from latex.forms import *
 
 def home(request):
@@ -19,9 +19,41 @@ def home(request):
 	html = site_template.render(Context({}))
 	return HttpResponse(html)
 
+#Project view, which is to be shown after user login.
+def projects(request):
+	if request.user.is_authenticated():
+		u = User.objects.get(username=request.user.username)
+		project_list = Project.objects.filter(author=u)
+		return render_to_response("projects.html", {'project_list' : project_list})
+		
+#create a project
+def create_project(request):
+	if request.POST:
+		new_data = request.POST.copy()
+		form = ProjectForm(new_data)
+		
+		for i in new_data.values():
+			if i == "":
+				return HttpResponse("Do not leave as blank")
+				
+		print form.data['author']
+		if not form.is_valid():
+			print "error"
+		user = User.objects.get(username=request.user.username)
+		short_name = form.data['short_name']
+		long_name = form.data['long_name']
+		description = form.data['description']
+		
+		new_project = Project(author=user, short_name=short_name, long_name=long_name, description=description)
+		new_project.save()
+		
+		return HttpResponse("Created new project successfully")
+		
+	else:
+		form = ProjectForm()
+		return render_to_response('new_project.html', {'form':form,}, context_instance=RequestContext(request))
 
 #User Registration
-
 def register_user(request):
 	if request.POST:
 		new_data = request.POST.copy()
@@ -83,8 +115,10 @@ def user_login(request):
 		return render_to_response('user_login.html', {'form':form,}, context_instance=RequestContext(request))
 
 
-def test(request):
-	if not request.user.is_authenticated():
-		return HttpResponse('Not authenticated')
+#To check user logged in or not
+def is_logged_in(request):
+	if request.user.is_authenticated():
+		return HttpResponse(str(request.user.username))
 	else:
-		return HttpResponse('Authenticated')
+		return HttpResponse('False')
+
