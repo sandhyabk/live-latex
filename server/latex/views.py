@@ -35,8 +35,7 @@ def create_project(request):
 		for i in new_data.values():
 			if i == "":
 				return HttpResponse("Do not leave as blank")
-				
-		print form.data['author']
+	
 		if not form.is_valid():
 			print "error"
 		user = User.objects.get(username=request.user.username)
