@@ -64,8 +64,8 @@ def register_user(request):
 
 #User login
 def user_login(request):
-	if request.GET:
-		new_data = request.GET.copy()
+	if request.POST:
+		new_data = request.POST.copy()
 		if new_data.has_key('logout'):
 			auth.logout(request)
 			return HttpResponse('True')
@@ -79,6 +79,9 @@ def user_login(request):
 			return HttpResponse('True')
 		else:
 			return HttpResponse('False')
+	else:
+		form = UserLogin()
+		return render_to_response('user_login.html', {'form':form,}, context_instance=RequestContext(request))
 
 #Confirmation
 def user_confirm(request, name, key):

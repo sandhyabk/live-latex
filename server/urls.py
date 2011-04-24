@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'server.latex.views.home', name='home'),
     url(r'^register/', 'server.latex.views.register_user'),
+	url(r'^login/', 'server.latex.views.user_login'),
     # url(r'^server/', include('server.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:

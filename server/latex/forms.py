@@ -176,3 +176,8 @@ class FileEditForm(forms.ModelForm):
 class ProjectEditForm(forms.ModelForm):
 	class Meta:
 		model = Project
+		
+#user login form
+class UserLogin(forms.Form):
+	username = forms.CharField(label="Username")
+	password = forms.CharField(label="Password", widget=forms.PasswordInput)
