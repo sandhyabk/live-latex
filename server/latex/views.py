@@ -9,7 +9,6 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.shortcuts import render_to_response, get_object_or_404
-from django.core.mail import send_mail
 from django.core.context_processors import csrf
 
 from latex.models import UserProfile
@@ -83,99 +82,9 @@ def user_login(request):
 		form = UserLogin()
 		return render_to_response('user_login.html', {'form':form,}, context_instance=RequestContext(request))
 
-#Confirmation
-def user_confirm(request, name, key):
-	
-	u = User.objects.get(username=name)
-	if u.is_active:
-		return render_response(request, 'user/confirm.html', {'actived':True})
-	elif u.get_profile().activation_key == key:
-		if u.get_profile().key_expires < datetime.datetime.today():
-			u.delete()
-			return render_response(request, 'user/confirm.html', {'key_expired':True})
-		else:
-			u.is_active = True
-			u.save()
-			return render_response(request, 'user/confirm.html', {'ok':True})
 
-
-def lost_password(request):
-	if request.method == 'POST':
-		form = LostPasswordForm(request.POST)
-		if form.is_valid():
-			# generate new key and e-mail it to user
-			salt = sha.new(str(random.random())).hexdigest()[8:]
-			key = sha.new(salt).hexdigest()
-
-			u = User.objects.get(username=form.cleaned_data['username'])
-			lostpwd = LostPassword(user=u)
-			lostpwd.key = key
-			lostpwd.key_expires = datetime.datetime.today() + datetime.timedelta(1)
-			lostpwd.save()
-
-			# mail it
-			email_dict = {
-                    "SITE_NAME": 'LiveLaTeX',
-                    'date': datetime.datetime.now(),
-                    'ip': request.META['REMOTE_ADDR'],
-                    'user': form.cleaned_data['username'],
-                    'link': 'http://pardusman.pardus.org.tr/%s' % key,
-                    }
-
-			email_subject = _("%(SITE_NAME)s User Password") % SITE_NAME
-			email_body = loader.get_template("mails/password.html").render(Context(email_dict))
-			email_to = form.cleaned_data['email']
-
-			send_mail(email_subject, email_body, DEFAULT_FROM_EMAIL, [email_to], fail_silently=True)
-			return render_response(request, 'user/lostpassword_done.html')
-		else:
-			return render_response(request, 'user/lostpassword.html', {'form': form})
+def test(request):
+	if not request.user.is_authenticated():
+		return HttpResponse('Not authenticated')
 	else:
-		form = LostPasswordForm()
-		return render_response(request, 'user/lostpassword.html', {'form': form})
-
-
-def change_password(request):
-	u = request.user
-	password_changed = False
-
-	if request.method == 'POST':
-		form = ChangePasswordForm(request.POST)
-		form.user = u
-
-	if form.is_valid() and len(form.cleaned_data['password']) > 0:
-		u.set_password(form.cleaned_data['password'])
-		u.save()
-		password_changed = True
-	else:
-		form = ChangePasswordForm()
-
-
-	return render_response(request, 'user/password.html', {
-        "form": form,
-        "password_changed": password_changed,
-        })
-
-def reset_password(request, key):
-	if LostPassword.objects.count() == 0:
-		return render_response(request, 'user/change_password.html', {'error': True, 'invalid': True})
-
-	lostpwd = LostPassword.objects.get(key=key)
-	if lostpwd.is_expired():
-		lostpwd.delete()
-		return render_response(request, 'user/change_password.html', {'error': True, 'expired': True})
-	else:
-		if request.method == 'POST':
-			form = ResetPasswordForm(request.POST)
-			if form.is_valid():
-				u = User.objects.get(username=lostpwd.user.username)
-				u.set_password(form.cleaned_data['password'])
-				u.save()
-				lostpwd.delete()
-				return render_response(request, 'user/change_password_done.html', {'login_url': LOGIN_URL})
-			else:
-				return render_response(request, 'user/change_password.html', {'form': form})
-		else:
-			form = ResetPasswordForm()
-			return render_response(request, 'user/change_password.html', {'form': form})
-
+		return HttpResponse('Authenticated')
